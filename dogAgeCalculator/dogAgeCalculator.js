@@ -17,60 +17,100 @@ node dogAgeCalculator.js
 // argv[2] = dog's name
 // argv[3] = dog's age (human years)
 // ----------------------------
+/*
+
+Dog Age Calculator
+
+This program runs in Node.js and calculates a dog's age in dog years.
+
+The user runs the program from the terminal and provides:
+1. The dog's name
+2. The dog's age in human years
+
+Example command:
+node dogAgeCalculator.js Maisie 3
+
+*/
+
+// Get the dog's name from the command line input
+// process.argv is an array that contains what was typed in the terminal
+// index 2 is the first user input after the file name
 const dogName = process.argv[2];
+
+// Get the dog's age from the command line input
+// index 3 is the second user input after the file name
 const humanAgeInput = process.argv[3];
 
-// ----------------------------
-// 2) Basic error handling (bonus)
-// ----------------------------
 
-// If the user forgot the name or age, show a helpful message.
+// Check if the user forgot to enter the dog's name or age
+// If either value is missing, show instructions and stop the program
 if (!dogName || !humanAgeInput) {
   console.log("Usage: node dogAgeCalculator.js <DogName> <HumanAgeNumber>");
   console.log("Example: node dogAgeCalculator.js Maisie 3");
+  
+  // process.exit stops the program from continuing
   process.exit(1);
 }
 
-// Convert the age input (a string) into a number.
+
+// Convert the age input from a string into a number
+// Command line inputs always start as strings
 const humanAge = Number(humanAgeInput);
 
-// If the user typed something that isn't a number, show a friendly message.
+
+// Check if the age entered is not a valid number
+// Number.isNaN returns true if the value is "Not a Number"
 if (Number.isNaN(humanAge)) {
   console.log("Please enter a number for the dog's age.");
+  
+  // Stop the program if the input is invalid
   process.exit(1);
 }
 
-// Assumption says whole numbers > 0, but we’ll still protect against 0 or negatives.
+
+// Check if the number entered is zero or negative
+// The assignment assumes ages must be greater than 0
 if (humanAge <= 0) {
   console.log("Please enter a whole number greater than 0 for the dog's age.");
+  
+  // Stop the program if the number is invalid
   process.exit(1);
 }
 
-// Optional: if someone types a decimal (like 7.5), this program rounds DOWN.
-// Reason: the lab assumes whole numbers, so flooring keeps it simple and predictable.
+
+// If the user enters a decimal number, round it down to a whole number
+// Math.floor removes the decimal portion
 const humanAgeWhole = Math.floor(humanAge);
 
-// ----------------------------
-// 3) Calculate dog years
-// Rules:
-// - Year 1 = 15 dog years
-// - Year 2 = +9 dog years
-// - Every year after that = +5 dog years per human year
-// ----------------------------
+
+// Create a variable to store the calculated dog age
 let dogYears = 0;
 
+
+// Calculate the dog's age using the rules from the assignment
+
+// If the dog is 1 human year old
 if (humanAgeWhole === 1) {
   dogYears = 15;
-} else if (humanAgeWhole === 2) {
-  dogYears = 24; // 15 + 9
-} else {
-  // First 2 years = 24 dog years, then +5 for each year after 2
+}
+
+// If the dog is 2 human years old
+// First year = 15 dog years
+// Second year = +9 dog years
+else if (humanAgeWhole === 2) {
+  dogYears = 24;
+}
+
+// If the dog is older than 2 human years
+// First two years = 24 dog years
+// Every additional year adds 5 dog years
+else {
   dogYears = 24 + (humanAgeWhole - 2) * 5;
 }
 
-// ----------------------------
-// 4) Print the result (must match the lab text exactly)
-// ----------------------------
+
+// Print the final result to the terminal
+// Template strings allow values to be inserted using ${ }
 console.log(
   `Your dog, ${dogName}, is ${humanAgeWhole} years old, but that's ${dogYears} years old in dog years!`
 );
